@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tareas Escolares</title>
+<style>
+:root{
+ --ink:#30334a;--muted:#85869b;--primary:#7666c7;--primary-dark:#5d4eaa;
+ --pink:#f7dce9;--pink-strong:#e99abb;--lav:#eae5fb;--mint:#def3e9;
+ --peach:#ffeadc;--butter:#fff3c9;--sky:#deefff;--line:#eeeaf4;
+ --paper:#fff;--bg:#faf8ff;--shadow:0 14px 38px rgba(92,76,137,.10);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,"Segoe UI",Arial,sans-serif;color:var(--ink);
+ background:radial-gradient(circle at 7% 4%,#ffe8f1 0,transparent 25%),
+ radial-gradient(circle at 95% 18%,#e7e1ff 0,transparent 26%),
+ radial-gradient(circle at 85% 95%,#e2f5ed 0,transparent 24%),var(--bg);min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;border:0;border-radius:13px;padding:12px 18px;
+ background:linear-gradient(135deg,#8a79d8,#6b5bb9);color:#fff;font-weight:750;
+ box-shadow:0 6px 15px rgba(118,102,199,.2);transition:transform .18s,filter .18s}
+button:hover{filter:brightness(1.04);transform:translateY(-2px)}
+button.secondary{background:#f0edfa;color:#6556a8;box-shadow:none}
+button.secondary:hover{background:#e7e1f8}
+button.danger{background:#fff0f3;color:#b45d7c;box-shadow:none}
+header{background:rgba(255,255,255,.88);backdrop-filter:blur(14px);
+ padding:15px max(20px,calc((100vw - 1120px)/2));display:flex;justify-content:space-between;
+ align-items:center;box-shadow:0 1px 0 #eee8f5;position:sticky;top:0;z-index:5}
+.brand{font-weight:900;letter-spacing:1px;font-size:15px;color:#46405f}
+.brand span{background:linear-gradient(90deg,#dc83ad,#8c7bd2);-webkit-background-clip:text;background-clip:text;color:transparent}
+#userLabel{font-size:13px;font-weight:650;color:#81769e}
+main{width:min(100% - 36px,1440px);max-width:1440px;margin:22px auto;padding:0;min-height:calc(100vh - 112px)}
+.screen{display:none}.screen.active{display:block;animation:appear .24s ease}
+@keyframes appear{from{opacity:.4;transform:translateY(5px)}to{opacity:1;transform:none}}
+.panel{background:rgba(255,255,255,.94);border:1px solid rgba(238,232,247,.95);
+ border-radius:30px;padding:clamp(28px,4vw,58px);box-shadow:var(--shadow);margin-bottom:20px;min-height:calc(100vh - 145px);position:relative;overflow:hidden}
+.panel:before{content:'📚　✏️　🌈';position:absolute;right:clamp(22px,4vw,58px);top:24px;font-size:clamp(19px,2vw,27px);letter-spacing:5px;opacity:.78;pointer-events:none}
+.panel>*{position:relative;z-index:1}
+.screen{min-height:calc(100vh - 112px)}
+.screen-art{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;margin:18px 0 28px;padding:20px;border-radius:24px;background:linear-gradient(105deg,#fff0f6,#f0edff 48%,#eaf8f1);border:1px solid #eee5f5}
+.art-sticker{display:grid;place-items:center;width:72px;height:72px;border-radius:22px;background:#ffffffc9;box-shadow:0 8px 20px #71618a18;font-size:36px;transform:rotate(var(--tilt,0deg))}
+.art-sticker:nth-child(2){--tilt:5deg;background:#fff7df}.art-sticker:nth-child(3){--tilt:-5deg;background:#e9f8f0}.art-sticker:nth-child(4){--tilt:4deg;background:#fceaf3}
+.art-copy{max-width:420px;margin-left:8px}.art-copy strong{display:block;font-size:18px;color:#5b4d88}.art-copy span{font-size:13px;color:#89819e;line-height:1.5}
+h1{font-size:30px;letter-spacing:-.8px;margin:0 0 9px;font-weight:850;color:#38334f}
+h2{font-size:22px;letter-spacing:-.3px;margin:0 0 8px;color:#48405f}
+h3{font-size:16px;margin:0 0 12px;color:#57506e}
+p{line-height:1.65}.muted{color:var(--muted)}.center{text-align:center}
+.center.panel{max-width:1100px;margin:2vh auto;padding:clamp(38px,6vw,76px) clamp(25px,6vw,80px);overflow:hidden;position:relative;min-height:calc(100vh - 150px);display:flex;flex-direction:column;justify-content:center;align-items:center}
+.center.panel:before{content:"✦";display:grid;place-items:center;width:72px;height:72px;margin:0 auto 22px;
+ border-radius:24px;background:linear-gradient(135deg,var(--pink),var(--lav));color:#8b6dbd;font-size:32px;
+ box-shadow:0 8px 20px #c9b6e833}
+.center.panel:after{content:"✿  ✧  ✦";position:absolute;right:25px;top:24px;color:#d9a6c3;letter-spacing:10px;font-size:18px}
+.center h1{font-size:clamp(30px,5vw,43px);max-width:540px;margin:10px auto;
+ background:linear-gradient(90deg,#d27fa8,#8875ce,#6da9a0);-webkit-background-clip:text;background-clip:text;color:transparent}
+.center p{max-width:620px;margin:10px auto 24px}
+.hero-illustration{display:flex;align-items:center;justify-content:center;gap:clamp(10px,3vw,30px);margin:25px auto 30px;width:min(100%,760px)}
+.hero-illustration span{display:grid;place-items:center;width:clamp(68px,11vw,112px);height:clamp(68px,11vw,112px);border-radius:30px;background:linear-gradient(145deg,#fff,#f7efff);font-size:clamp(35px,6vw,58px);box-shadow:0 12px 26px #8876b51c;border:1px solid #f0e8f8}
+.hero-illustration span:nth-child(2){transform:translateY(-13px) rotate(5deg);background:linear-gradient(145deg,#fff5dc,#fff)}
+.hero-illustration span:nth-child(3){transform:translateY(8px) rotate(-5deg);background:linear-gradient(145deg,#e5f7ed,#fff)}
+.hero-illustration span:nth-child(4){transform:translateY(-8px) rotate(4deg);background:linear-gradient(145deg,#ffe8f1,#fff)}
+input,select,textarea{width:100%;padding:14px 15px;border:1px solid #e8e2f0;border-radius:13px;
+ margin:8px 0 18px;background:#fdfcff;color:var(--ink);outline:none;transition:.18s}
+input:focus,select:focus,textarea:focus{border-color:#aa9bdd;box-shadow:0 0 0 3px #eee9fc}
+label{font-weight:750;font-size:13px;color:#625b78}
+input[type=checkbox]{width:auto;margin-right:8px;accent-color:#8875ce}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(205px,1fr));gap:16px;margin-top:24px}
+.tile{border:1px solid transparent;border-radius:24px;padding:27px;text-align:left;color:var(--ink);
+ min-height:154px;box-shadow:none;transition:.2s;position:relative;overflow:hidden}
+.tile:nth-child(1){background:linear-gradient(140deg,#f9e5ef,#fff8fb);border-color:#f2d8e5}
+.tile:nth-child(2){background:linear-gradient(140deg,#e5f4eb,#f8fffb);border-color:#d7eee1}
+.tile:nth-child(3){background:linear-gradient(140deg,#e5efff,#f8fbff);border-color:#d9e7fa}
+.tile:nth-child(4){background:linear-gradient(140deg,#fff0d9,#fffaf0);border-color:#f5e7c9}
+.tile:hover{transform:translateY(-4px);box-shadow:0 12px 24px #7564a51c}
+.tile strong{display:block;font-size:17px;margin:13px 0 6px;color:#403b58}
+.tile .emoji{display:grid;place-items:center;width:62px;height:62px;border-radius:19px;
+ background:rgba(255,255,255,.75);font-size:31px;box-shadow:0 3px 10px #6d5c8110}
+.row{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.item{border:1px solid var(--line);border-radius:16px;padding:17px;margin:11px 0;background:#fff}
+.item:nth-child(4n+1){border-left:4px solid #e7a9c5}
+.item:nth-child(4n+2){border-left:4px solid #9fcdb5}
+.item:nth-child(4n+3){border-left:4px solid #a9bce6}
+.item:nth-child(4n){border-left:4px solid #edc987}
+.item small{display:block;color:var(--muted);margin-top:6px;line-height:1.5}
+.item strong{font-size:15px}
+.tabs{display:flex;gap:8px;margin:18px 0;padding:5px;background:#f5f1fb;border-radius:14px}
+.tabs button{flex:1;box-shadow:none;background:transparent;color:#82799b}
+.tabs button.selected{background:#fff;color:#6556a8;box-shadow:0 3px 9px #6f5e941c}
+.hidden{display:none!important}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);gap:7px;text-align:center}
+.day{background:#f8f6fc;padding:13px 2px;border-radius:11px;min-height:43px;color:#615b76}
+.day.head{background:#eee9fb;color:#6c5bb0;font-weight:850}
+.progress{height:13px;background:#f0edf6;border-radius:30px;overflow:hidden;margin:12px 0}
+.progress div{height:100%;background:linear-gradient(90deg,#e89cbd,#a18bdb,#8bc6aa);width:0;border-radius:30px;transition:width .3s}
+footer{text-align:center;color:#a19bb1;font-size:12px;padding:30px 16px}
+#auth .panel{max-width:560px;margin:0 auto}
+#terms .panel,#addSubject .panel,#addTask .panel{max-width:680px;margin:0 auto}
+#subjects .panel,#tasks .panel,#calendar .panel,#summary .panel{min-height:420px}
+ol{line-height:1.9;color:#68647b;padding-left:22px}
+@media(max-width:600px){
+ header{padding:14px 17px}main{width:calc(100% - 20px);margin:12px auto;padding:0}
+ .panel{padding:24px 18px;border-radius:22px;min-height:calc(100vh - 105px)}h1{font-size:25px}
+ .panel:before{font-size:16px;right:16px;top:12px}.screen-art{gap:8px;padding:13px}.art-sticker{width:53px;height:53px;font-size:27px;border-radius:16px}.art-copy{width:100%;text-align:center;margin:7px 0 0}.hero-illustration{gap:8px;margin:20px auto}.hero-illustration span{border-radius:20px}
+ .center.panel{margin:4vh auto;padding:39px 22px}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .tile{padding:16px;min-height:145px}.row button{padding:10px 13px}
+ .item .row{align-items:flex-start}
+}
+</style>
+</head>
+<body>
+<header><div class="brand">✦ TAREAS <span>ESCOLARES</span></div><div id="userLabel" class="muted"></div></header>
+<main>
+<section id="welcome" class="screen active"><div class="panel center">
+<p class="muted">Organiza, cumple y aprende</p><h1>¡Bienvenido a Tareas Escolares!</h1>
+<p>Ten todas tus actividades escolares en un solo lugar.</p><div class="hero-illustration"><span>📚</span><span>📝</span><span>🎨</span><span>⭐</span></div><br><button onclick="go('terms')">Comenzar</button>
+</div></section>
+
+<section id="terms" class="screen"><div class="panel"><h1>Términos y condiciones</h1>
+<ol><li>La aplicación está diseñada para apoyar la organización de actividades escolares.</li><li>La información que registres se utilizará para mostrar tus materias y tareas.</li><li>Revisa que las fechas de entrega sean correctas.</li><li>Mantén tus datos de acceso en privado.</li><li>Puedes actualizar tus tareas cuando sea necesario.</li></ol>
+<label><input id="accept" type="checkbox" style="width:auto;margin-right:8px">Acepto los términos y condiciones</label><br><button onclick="acceptTerms()">Continuar</button></div></section>
+
+<section id="auth" class="screen"><div class="panel"><div class="tabs"><button id="loginTab" class="selected" onclick="authMode('login')">Iniciar sesión</button><button id="registerTab" class="secondary" onclick="authMode('register')">Registrarme</button></div>
+<div id="registerFields" class="hidden"><label>Nombre completo</label><input id="regName" placeholder="Tu nombre"><label>Correo electrónico</label><input id="regEmail" type="email" placeholder="nombre@correo.com"><label>Contraseña</label><input id="regPass" type="password" placeholder="Crea una contraseña"><label>Confirmar contraseña</label><input id="regConfirm" type="password" placeholder="Repite tu contraseña"><button onclick="register()">Crear cuenta</button></div>
+<div id="loginFields"><label>Correo electrónico</label><input id="loginEmail" type="email" placeholder="nombre@correo.com"><label>Contraseña</label><input id="loginPass" type="password" placeholder="Tu contraseña"><button onclick="login()">Entrar</button></div>
+<p id="authMsg" class="muted"></p></div></section>
+
+<section id="home" class="screen"><div class="panel"><h1>¡Hola! ¿Qué deseas hacer?</h1><p class="muted">Organiza tu semana paso a paso.</p>
+<div class="grid">
+<button class="tile" onclick="showSubjects()"><span class="emoji">📚</span><strong>Mis materias</strong>Consulta tus clases</button>
+<button class="tile" onclick="showTasks()"><span class="emoji">✓</span><strong>Mis tareas</strong>Revisa tus actividades</button>
+<button class="tile" onclick="showCalendar()"><span class="emoji">🗓️</span><strong>Calendario</strong>Fechas de entrega</button>
+<button class="tile" onclick="showSummary()"><span class="emoji">📊</span><strong>Resumen</strong>Tu progreso escolar</button>
+</div><br><button class="secondary" onclick="logout()">Cerrar sesión</button></div></section>
+
+<section id="subjects" class="screen"><div class="panel"><div class="row"><h1>Mis materias</h1><button onclick="go('addSubject')">+ Agregar</button></div><div id="subjectList"></div><button class="secondary" onclick="go('home')">Volver al menú</button></div></section>
+<section id="addSubject" class="screen"><div class="panel"><h1>Agregar materia</h1><p class="muted">Elige una materia de la lista o escribe una diferente.</p><label>Selecciona la materia</label><select id="subjectName" onchange="toggleOtherSubject()"><option value="">Selecciona una materia</option><option>Matemáticas</option><option>Lengua y literatura</option><option>Español</option><option>Inglés</option><option>Ciencias naturales</option><option>Biología</option><option>Física</option><option>Química</option><option>Historia</option><option>Geografía</option><option>Formación cívica y ética</option><option>Tecnología</option><option>Informática</option><option>Artes</option><option>Educación física</option><option>Orientación</option><option value="Otra">Otra materia</option></select><div id="otherSubjectBox" class="hidden"><label>Escribe el nombre de la materia</label><input id="otherSubject" placeholder="Nombre de tu materia"></div><label>Nombre del profesor</label><input id="teacher" placeholder="Ej. Prof. García"><label>Grupo (opcional)</label><input id="group" placeholder="Ej. 3° B"><button onclick="saveSubject()">Guardar materia</button> <button class="secondary" onclick="showSubjects()">Cancelar</button></div></section>
+
+<section id="tasks" class="screen"><div class="panel"><div class="row"><h1>Mis tareas</h1><button onclick="go('addTask')">+ Agregar tarea</button></div><div class="tabs"><button id="pendingTab" onclick="taskFilter('pending')">Pendientes</button><button id="doneTab" class="secondary" onclick="taskFilter('done')">Terminadas</button></div><div id="taskList"></div><button class="secondary" onclick="go('home')">Volver al menú</button></div></section>
+<section id="addTask" class="screen"><div class="panel"><h1>Agregar tarea</h1><label>Nombre de la tarea</label><input id="taskName" placeholder="Ej. Resolver ejercicios"><label>Materia</label><select id="taskSubject"></select><label>Fecha de entrega</label><input id="taskDate" type="date"><label>Descripción (opcional)</label><textarea id="taskDescription" rows="3" placeholder="Detalles de la actividad"></textarea><button onclick="saveTask()">Guardar tarea</button> <button class="secondary" onclick="showTasks()">Cancelar</button></div></section>
+
+<section id="calendar" class="screen"><div class="panel"><h1>Calendario</h1><div class="row"><button class="secondary" onclick="changeMonth(-1)">‹</button><h2 id="monthTitle"></h2><button class="secondary" onclick="changeMonth(1)">›</button></div><div id="calendarGrid" class="calendar"></div><h3 style="margin-top:24px">Próximas entregas</h3><div id="upcoming"></div><button class="secondary" onclick="go('home')">Volver al menú</button></div></section>
+<section id="summary" class="screen"><div class="panel"><h1>Resumen</h1><div class="grid"><div class="item"><span class="muted">Total de tareas</span><h2 id="totalCount">0</h2></div><div class="item"><span class="muted">Completadas</span><h2 id="doneCount">0</h2></div><div class="item"><span class="muted">Pendientes</span><h2 id="pendingCount">0</h2></div><div class="item"><span class="muted">Materias</span><h2 id="subjectCount">0</h2></div></div><h3>Progreso de actividades</h3><div class="progress"><div id="progressBar"></div></div><p id="progressText" class="muted"></p><button class="secondary" onclick="go('home')">Volver al menú</button></div></section>
+</main><footer>Aplicación escolar para organizar materias y actividades.</footer>
+<script>
+const $=id=>document.getElementById(id);
+let data=JSON.parse(localStorage.getItem('schoolData')||'{"users":[],"subjects":[],"tasks":[]}');
+let currentUser=null, filter='pending', shownMonth=new Date();
+function persist(){localStorage.setItem('schoolData',JSON.stringify(data))}
+function go(id){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ const screen=$(id);screen.classList.add('active');
+ const art={
+  welcome:['📚','📝','🎨','⭐','¡Todo tu mundo escolar en un solo lugar!','Organiza tus materias, tareas y fechas importantes.'],
+  terms:['📌','💡','🛡️','🌟','Un espacio para organizarte','Lee las indicaciones antes de comenzar.'],
+  auth:['👩‍🎓','🔐','💌','✨','Tu espacio personal','Ingresa para guardar y consultar tus actividades.'],
+  home:['📚','🗓️','✏️','🏆','¡Tu espacio de estudio!','Elige una sección y sigue avanzando con tus actividades.'],
+  subjects:['📘','🧮','🔬','🌎','Tus materias','Ten tus clases organizadas en un solo lugar.'],
+  addSubject:['📖','🧪','🎭','➕','Agrega tus clases','Selecciona tus materias y completa los datos.'],
+  tasks:['📝','⏰','📎','✅','Tus actividades','Consulta lo que tienes pendiente y lo que ya terminaste.'],
+  addTask:['✍️','📅','📚','🌟','Nueva actividad','Registra qué debes hacer y cuándo debes entregarlo.'],
+  calendar:['🗓️','📍','⏳','🌼','Fechas importantes','Visualiza tus entregas y organiza tu tiempo.'],
+  summary:['🏅','📊','⭐','🎯','Mira cuánto has avanzado','Cada tarea completada cuenta. ¡Sigue así!']
+ };
+ if(!screen.querySelector('.screen-art')){
+  const a=art[id]||art.home;
+  const strip=document.createElement('div');strip.className='screen-art';
+  strip.innerHTML=a.slice(0,4).map(x=>`<div class="art-sticker">${x}</div>`).join('')+
+   `<div class="art-copy"><strong>${a[4]}</strong><span>${a[5]}</span></div>`;
+  const panel=screen.querySelector('.panel');
+  if(panel)panel.insertBefore(strip,panel.children[0]);
+ }
+}
+function acceptTerms(){if(!$('accept').checked){alert('Debes aceptar los términos para continuar.');return}go('auth')}
+function authMode(mode){$('registerFields').classList.toggle('hidden',mode!=='register');$('loginFields').classList.toggle('hidden',mode!=='login');$('loginTab').className=mode==='login'?'':'secondary';$('registerTab').className=mode==='register'?'':'secondary';$('authMsg').textContent=''}
+function register(){let name=$('regName').value.trim(),email=$('regEmail').value.trim().toLowerCase(),pass=$('regPass').value,confirm=$('regConfirm').value;if(!name||!email||!pass){$('authMsg').textContent='Completa todos los campos.';return}if(pass!==confirm){$('authMsg').textContent='Las contraseñas no coinciden.';return}if(data.users.some(u=>u.email===email)){$('authMsg').textContent='Ese correo ya está registrado.';return}data.users.push({name,email,pass});persist();$('authMsg').textContent='Cuenta creada. Ahora inicia sesión.';authMode('login');$('loginEmail').value=email}
+function login(){let email=$('loginEmail').value.trim().toLowerCase(),pass=$('loginPass').value;let user=data.users.find(u=>u.email===email&&u.pass===pass);if(!user){$('authMsg').textContent='Correo o contraseña incorrectos.';return}currentUser=user;$('userLabel').textContent=user.name;go('home')}
+function logout(){currentUser=null;$('userLabel').textContent='';go('welcome')}
+function showSubjects(){renderSubjects();go('subjects')}
+function renderSubjects(){$('subjectList').innerHTML=data.subjects.map((s,i)=>`<div class="item"><div class="row"><div><strong>📘 ${esc(s.name)}</strong><small>${esc(s.teacher)} ${s.group?'· '+esc(s.group):''}</small></div><button class="danger" onclick="deleteSubject(${i})">Eliminar</button></div></div>`).join('')||'<p class="muted">Aún no has agregado materias.</p>'}
+function toggleOtherSubject(){$('otherSubjectBox').classList.toggle('hidden',$('subjectName').value!=='Otra')}
+function saveSubject(){let selected=$('subjectName').value;let name=selected==='Otra'?$('otherSubject').value.trim():selected;if(!name){alert('Selecciona una materia o escribe su nombre.');return}if(data.subjects.some(s=>s.name.toLowerCase()===name.toLowerCase())){alert('Esa materia ya está agregada.');return}data.subjects.push({name,teacher:$('teacher').value.trim(),group:$('group').value.trim()});persist();$('subjectName').value='';$('otherSubject').value='';$('otherSubjectBox').classList.add('hidden');$('teacher').value=$('group').value='';showSubjects()}
+function deleteSubject(i){if(confirm('¿Eliminar esta materia?')){data.subjects.splice(i,1);persist();renderSubjects()}}
+function showTasks(){fillSubjects();taskFilter('pending');go('tasks')}
+function fillSubjects(){$('taskSubject').innerHTML=data.subjects.map((s,i)=>`<option value="${i}">${esc(s.name)}</option>`).join('');if(!data.subjects.length)$('taskSubject').innerHTML='<option value="">Primero agrega una materia</option>'}
+function taskFilter(f){filter=f;$('pendingTab').className=f==='pending'?'':'secondary';$('doneTab').className=f==='done'?'':'secondary';renderTasks()}
+function renderTasks(){let list=data.tasks.map((t,i)=>({...t,i})).filter(t=>filter==='done'?t.done:!t.done);$('taskList').innerHTML=list.map(t=>`<div class="item"><div class="row"><div><strong>${esc(t.subject)} · ${esc(t.name)}</strong><small>📅 ${esc(t.date||'Sin fecha')}</small>${t.description?'<small>'+esc(t.description)+'</small>':''}</div><div>${t.done?'':'<button onclick="toggleTask('+t.i+')">Completar</button>'}<button class="danger" onclick="deleteTask(${t.i})">Eliminar</button></div></div></div>`).join('')||'<p class="muted">No hay tareas en esta sección.</p>'}
+function saveTask(){let name=$('taskName').value.trim(),idx=$('taskSubject').value;if(!name||!data.subjects.length){alert('Escribe el nombre y agrega/selecciona una materia.');return}data.tasks.push({name,subject:data.subjects[Number(idx)].name,date:$('taskDate').value,description:$('taskDescription').value.trim(),done:false});persist();$('taskName').value=$('taskDate').value=$('taskDescription').value='';showTasks()}
+function toggleTask(i){data.tasks[i].done=!data.tasks[i].done;persist();renderTasks()}
+function deleteTask(i){if(confirm('¿Eliminar esta tarea?')){data.tasks.splice(i,1);persist();renderTasks()}}
+function showCalendar(){renderCalendar();go('calendar')}
+function changeMonth(n){shownMonth.setMonth(shownMonth.getMonth()+n);renderCalendar()}
+function renderCalendar(){let y=shownMonth.getFullYear(),m=shownMonth.getMonth(),first=(new Date(y,m,1).getDay()+6)%7,days=new Date(y,m+1,0).getDate();$('monthTitle').textContent=new Intl.DateTimeFormat('es-MX',{month:'long',year:'numeric'}).format(shownMonth);let cells=['L','M','X','J','V','S','D'].map(d=>`<div class="day head">${d}</div>`).join('');for(let i=0;i<first;i++)cells+='<div></div>';for(let d=1;d<=days;d++){let date=`${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`,has=data.tasks.some(t=>t.date===date&&!t.done);cells+=`<div class="day" style="${has?'background:#dff1e7;font-weight:bold':''}">${d}${has?' •':''}</div>`}$('calendarGrid').innerHTML=cells;$('upcoming').innerHTML=data.tasks.filter(t=>!t.done&&t.date).sort((a,b)=>a.date.localeCompare(b.date)).slice(0,5).map(t=>`<div class="item"><strong>${esc(t.subject)}</strong><small>${esc(t.name)} · ${esc(t.date)}</small></div>`).join('')||'<p class="muted">No hay entregas próximas registradas.</p>'}
+function showSummary(){let total=data.tasks.length,done=data.tasks.filter(t=>t.done).length,pct=total?Math.round(done/total*100):0;$('totalCount').textContent=total;$('doneCount').textContent=done;$('pendingCount').textContent=total-done;$('subjectCount').textContent=data.subjects.length;$('progressBar').style.width=pct+'%';$('progressText').textContent=pct+'% de tus tareas completadas';go('summary')}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+</script></body></html>
